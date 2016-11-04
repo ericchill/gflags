@@ -155,17 +155,18 @@ list (REMOVE_AT GFLAGS_NAMESPACE_SECONDARY 0)
 
 # cached build options when gflags is not a subproject, otherwise non-cached CMake variables
 # usage: gflags_define(BOOL <name> <doc> <default> [<subproject default>])
-gflags_define (BOOL BUILD_SHARED_LIBS          "Request build of shared libraries."                                       OFF OFF)
-gflags_define (BOOL BUILD_STATIC_LIBS          "Request build of static libraries (default if BUILD_SHARED_LIBS is OFF)." OFF ON)
-gflags_define (BOOL BUILD_gflags_LIB           "Request build of the multi-threaded gflags library."                      ON  OFF)
-gflags_define (BOOL BUILD_gflags_nothreads_LIB "Request build of the single-threaded gflags library."                     ON  ON)
+gflags_define (BOOL BUILD_SHARED_LIBS          "Request build of shared libraries."                                       ON ON)
+gflags_define (BOOL BUILD_STATIC_LIBS          "Request build of static libraries (default if BUILD_SHARED_LIBS is OFF)." OFF OFF)
+gflags_define (BOOL BUILD_gflags_LIB           "Request build of the multi-threaded gflags library."                      ON  ON)
+gflags_define (BOOL BUILD_gflags_nothreads_LIB "Request build of the single-threaded gflags library."                     OFF  OFF)
 gflags_define (BOOL BUILD_PACKAGING            "Enable build of distribution packages using CPack."                       OFF OFF)
 gflags_define (BOOL BUILD_TESTING              "Enable build of the unit tests and their execution using CTest."          OFF OFF)
 gflags_define (BOOL INSTALL_HEADERS            "Request installation of headers and other development files."             ON  OFF)
 gflags_define (BOOL INSTALL_SHARED_LIBS        "Request installation of shared libraries."                                ON  ON)
 gflags_define (BOOL INSTALL_STATIC_LIBS        "Request installation of static libraries."                                ON  OFF)
 
-gflags_property (BUILD_STATIC_LIBS   ADVANCED TRUE)
+gflags_property (BUILD_SHARED_LIBS   ADVANCED TRUE)
+#gflags_property (BUILD_STATIC_LIBS   ADVANCED TRUE)
 gflags_property (INSTALL_HEADERS     ADVANCED TRUE)
 gflags_property (INSTALL_SHARED_LIBS ADVANCED TRUE)
 gflags_property (INSTALL_STATIC_LIBS ADVANCED TRUE)
@@ -184,6 +185,8 @@ if (NOT GFLAGS_IS_SUBPROJECT)
     gflags_property (CMAKE_BUILD_TYPE STRINGS "${CMAKE_CONFIGURATION_TYPES}")
   endif ()
 endif () # NOT GFLAGS_IS_SUBPROJECT
+
+set (CMAKE_CXX_FLAGS "-std=c++0x")
 
 if (NOT BUILD_SHARED_LIBS AND NOT BUILD_STATIC_LIBS)
   set (BUILD_STATIC_LIBS ON)
